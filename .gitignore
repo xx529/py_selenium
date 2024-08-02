@@ -1,2 +1,2 @@
-.env
-account.txt
+config/.env
+config/account.txt
