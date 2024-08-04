@@ -51,4 +51,4 @@ chrome.switch_to_last_window()
 # chrome.quit()
 
 df_all = pd.concat(df_ls)
-df_all.to_excel(f'{str(data_dir / start_datetime)}.xlsx')
+df_all.to_csv(f'{str(data_dir / start_datetime)}.csv', index=False)

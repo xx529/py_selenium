@@ -7,7 +7,7 @@ from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
-
+from io import StringIO
 from app.elements import ElementSelector
 
 
@@ -52,10 +52,7 @@ class ChromeBrowser:
 
     def get_table(self, name: str) -> pd.DataFrame:
         logger.info(f'获取表格`{name}`')
-        e = self.get_element(name)
-        data = e.find_elements(by=By.TAG_NAME, value='tr')
-        rows = [[x.text for x in d.find_elements(by=By.TAG_NAME, value='td')] for d in data]
-        return pd.DataFrame(rows[1:], index=rows[0])
+        return pd.read_html(StringIO(self.get_element(name).get_attribute('outerHTML')))[0]
 
     @staticmethod
     def wait(seconds: int):
