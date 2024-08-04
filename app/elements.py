@@ -70,5 +70,10 @@ selector = ElementSelector(elements=[
     Element(
         name='视频作品',
         key='/html/body/div/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[4]/div/div/div[1]/div[1]/div[2]/div[5]/div'
+    ),
+    Element(
+        name='作品表格',
+        key='semi-table-body',
+        by=By.CLASS_NAME
     )
 ])

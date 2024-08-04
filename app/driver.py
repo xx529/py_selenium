@@ -1,11 +1,14 @@
 import random
 import time
 
+import pandas as pd
 from loguru import logger
 from selenium import webdriver
 from selenium.webdriver import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webelement import WebElement
 
-from elements import ElementSelector
+from app.elements import ElementSelector
 
 
 class ChromeBrowser:
@@ -20,17 +23,17 @@ class ChromeBrowser:
         self.b.get(url)
         return self
 
-    def click(self, name: str, error='raise'):
+    def click(self, name: str, error='raise') -> bool:
         logger.info(f'点击`{name}`')
         try:
             self.get_element(name).click()
             time.sleep(random.random())
+            return True
         except Exception as e:
             if error == 'ignore':
-                pass
+                return False
             else:
                 raise e
-        return self
 
     def send(self, name: str, value: str):
         logger.info(f'向`{name}`输入`{value}`')
@@ -38,7 +41,7 @@ class ChromeBrowser:
         time.sleep(random.random())
         return self
 
-    def get_element(self, name: str):
+    def get_element(self, name: str) -> WebElement:
         e = self.selector.get(name)
         return self.b.find_element(e.by, e.key)
 
@@ -46,6 +49,13 @@ class ChromeBrowser:
         logger.info(f'按回车键`{name}`')
         self.send(name, Keys.ENTER)
         return self
+
+    def get_table(self, name: str) -> pd.DataFrame:
+        logger.info(f'获取表格`{name}`')
+        e = self.get_element(name)
+        data = e.find_elements(by=By.TAG_NAME, value='tr')
+        rows = [[x.text for x in d.find_elements(by=By.TAG_NAME, value='td')] for d in data]
+        return pd.DataFrame(rows[1:], index=rows[0])
 
     @staticmethod
     def wait(seconds: int):
