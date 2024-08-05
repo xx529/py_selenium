@@ -75,5 +75,17 @@ selector = ElementSelector(elements=[
         name='作品表格',
         key='semi-table-body',
         by=By.CLASS_NAME
+    ),
+    Element(
+        name='总数统计',
+        key='//*[@id="semiTabPanelvideo_data"]/div/div/div[2]/div[1]/div/div[2]'
+    ),
+    Element(
+        name='作品列表下一页',
+        key='//*[@id="semiTabPanelvideo_data"]/div/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[2]/div/ul/li[last()]'
+    ),
+    Element(
+        name='跳过引导',
+        key='//*[@id="react-joyride-step-0"]/div/div/div[1]/div[2]/span/button'
     )
 ])

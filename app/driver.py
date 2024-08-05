@@ -23,11 +23,13 @@ class ChromeBrowser:
         self.b.get(url)
         return self
 
-    def click(self, name: str, error='raise') -> bool:
+    def click(self, name: str, error: str = 'raise', wait: int = 0) -> bool:
         logger.info(f'点击`{name}`')
         try:
             self.get_element(name).click()
             time.sleep(random.random())
+            if wait:
+                time.sleep(wait)
             return True
         except Exception as e:
             if error == 'ignore':
@@ -37,7 +39,9 @@ class ChromeBrowser:
 
     def send(self, name: str, value: str):
         logger.info(f'向`{name}`输入`{value}`')
-        self.get_element(name).send_keys(value)
+        e = self.get_element(name)
+        e.clear()
+        e.send_keys(value)
         time.sleep(random.random())
         return self
 
@@ -61,8 +65,9 @@ class ChromeBrowser:
             time.sleep(1)
         return
 
-    def switch_to_next_window(self):
+    def switch_to_next_window(self, wait: int = 2):
         logger.info('切换到下一个窗口')
+        time.sleep(wait)
         self.b.switch_to.window(self.b.window_handles[-1])
 
     def switch_to_last_window(self):
@@ -71,4 +76,5 @@ class ChromeBrowser:
         self.b.switch_to.window(self.b.window_handles[0])
 
     def quit(self):
+        logger.info('关闭浏览器')
         self.b.quit()
