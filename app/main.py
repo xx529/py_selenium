@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -6,7 +7,6 @@ from dotenv import load_dotenv
 
 from app.driver import ChromeBrowser
 from app.elements import selector
-from datetime import datetime
 
 cur_dir = Path().parent
 
@@ -14,6 +14,9 @@ load_dotenv(cur_dir / 'config' / '.env')
 
 if not (data_dir := (cur_dir / 'data')).exists():
     data_dir.mkdir()
+
+with open(cur_dir / 'config' / 'account.txt') as f:
+    accounts = [x.strip() for x in f.readlines() if x != '']
 
 start_datetime = datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
 
@@ -31,7 +34,7 @@ chrome.click('主播列表')
 chrome.click('右侧弹出框', error='ignore')
 
 df_ls = []
-streamer = '36666239365'
+streamer = accounts[0]
 
 chrome.click('搜索主播框')
 chrome.send('搜索主播框（激活后）', streamer)
