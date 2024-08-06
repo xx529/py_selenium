@@ -68,6 +68,10 @@ selector = ElementSelector(elements=[
         key='/html/body/div/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[4]/div[2]/div/div/div/div/div[1]/div/table/tbody/tr/td[16]/div/div/button[1]/span'
     ),
     Element(
+        name='主播ID',
+        key='//*[@id="root"]/div[2]/div[4]/div[2]/div/div/div/div/div[1]/div/table/tbody/tr/td[1]/div/div/div[2]/div[2]/span[1]/span'
+    ),
+    Element(
         name='视频作品',
         key='/html/body/div/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[4]/div/div/div[1]/div[1]/div[2]/div[5]/div'
     ),
@@ -87,5 +91,9 @@ selector = ElementSelector(elements=[
     Element(
         name='跳过引导',
         key='//*[@id="react-joyride-step-0"]/div/div/div[1]/div[2]/span/button'
+    ),
+    Element(
+        name='表格首序号',
+        key='//*[@id="semiTabPanelvideo_data"]/div/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[1]/div/table/tbody/tr[1]/td[1]/div'
     )
 ])
