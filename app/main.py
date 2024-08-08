@@ -107,5 +107,5 @@ chrome.quit()
 df_all = pd.concat(df_ls)
 df_all['播放量'] = df_all['播放量'].apply(
     lambda x: float(x[:-1]) * 10000 if str(x).endswith('万') else x).astype(int)
-df_all[['主播ID', '播放量']].to_csv(f'{str(data_dir / start_datetime)}.csv', index=False)
+df_all[['主播ID', '播放量']].to_csv(data_dir / f'{start_datetime}.csv', index=False)
 logger.info('完成，数据已保存')
