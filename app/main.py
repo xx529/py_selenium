@@ -6,6 +6,7 @@ from loguru import logger
 
 from driver import ChromeBrowser
 from elements import selector
+from process import process_data
 
 cur_dir = Path(__file__).parent.parent
 
@@ -89,7 +90,7 @@ for streamer_id in accounts:
         chrome.wait_equal('表格首序号', str(cur_page * 10 + 1))
 
         df = chrome.get_table('作品表格')
-        df['主播ID'] = streamer_id
+        df['抖音号'] = streamer_id
         df_ls.append(df)
         total -= 10
 
@@ -103,9 +104,7 @@ for streamer_id in accounts:
     chrome.wait(1)
 
 chrome.quit()
+logger.info('数据收集完成')
 
-df_all = pd.concat(df_ls)
-df_all['播放量'] = df_all['播放量'].apply(
-    lambda x: float(x[:-1]) * 10000 if str(x).endswith('万') else x).astype(int)
-df_all[['主播ID', '播放量']].to_csv(f'{str(data_dir / start_datetime)}.csv', index=False)
+process_data(pd.concat(df_ls)).to_excel(f'{str(data_dir / start_datetime)}.xlsx', index=False)
 logger.info('完成，数据已保存')
