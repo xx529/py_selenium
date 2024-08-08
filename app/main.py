@@ -24,7 +24,7 @@ with open(cur_dir / 'config' / 'account.txt') as f:
 logger.info(f'共 {len(accounts)} 个账号，运行时间约{int(len(accounts) / 2)}分钟')
 logger.info(f'accounts: {accounts}')
 
-start_datetime = datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
+start_datetime = datetime.now().strftime('%Y-%m-%d-%H_%M_%S')
 
 chrome = ChromeBrowser(selector=selector, timeout=60)
 chrome.open('https://union.bytedance.com/open/portal/index/?appId=3000&notHasBroker=&notHasRecruitBroker=')
@@ -107,5 +107,5 @@ chrome.quit()
 df_all = pd.concat(df_ls)
 df_all['播放量'] = df_all['播放量'].apply(
     lambda x: float(x[:-1]) * 10000 if str(x).endswith('万') else x).astype(int)
-df_all[['主播ID', '播放量']].to_csv(data_dir / f'{start_datetime}.csv', index=False)
+df_all[['主播ID', '播放量']].to_csv(f'{str(data_dir / start_datetime)}.csv', index=False)
 logger.info('完成，数据已保存')
