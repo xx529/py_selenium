@@ -4,10 +4,10 @@ from pathlib import Path
 import pandas as pd
 from loguru import logger
 
-from app.driver import ChromeBrowser
-from app.elements import selector
+from driver import ChromeBrowser
+from elements import selector
 
-cur_dir = Path().parent
+cur_dir = Path(__file__).parent.parent
 
 acc = {}
 with open(cur_dir / 'config' / '.env') as f:

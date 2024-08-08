@@ -11,7 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from tenacity import retry, stop_after_attempt
 
-from app.elements import ElementSelector
+from elements import ElementSelector
 
 
 class ChromeBrowser:
