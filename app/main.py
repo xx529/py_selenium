@@ -75,7 +75,7 @@ for streamer_id in accounts:
     chrome.switch_to_next_window()
 
     chrome.click('视频作品')
-    chrome.wait(3)
+    chrome.wait(1)
     total = int(chrome.get_element('总数统计').text.split('·')[-1].replace('个', ''))
     logger.info(f'total: {total}')
 
@@ -105,5 +105,5 @@ chrome.quit()
 df_all = pd.concat(df_ls)
 df_all['播放量'] = df_all['播放量'].apply(
     lambda x: float(x[:-1]) * 10000 if str(x).endswith('万') else x).astype(int)
-df_all.to_csv(f'{str(data_dir / start_datetime)}.csv', index=False)
+df_all[['主播ID', '播放量']].to_csv(f'{str(data_dir / start_datetime)}.csv', index=False)
 logger.info('完成，数据已保存')
