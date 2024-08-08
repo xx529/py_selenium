@@ -1,9 +1,7 @@
-import os
 from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
-from dotenv import load_dotenv
 from loguru import logger
 
 from app.driver import ChromeBrowser
@@ -11,7 +9,11 @@ from app.elements import selector
 
 cur_dir = Path().parent
 
-load_dotenv(cur_dir / 'config' / '.env')
+acc = {}
+with open(cur_dir / 'config' / '.env') as f:
+    for line in f.readlines():
+        key, value = line.strip().split('=')
+        acc[key] = value
 
 if not (data_dir := (cur_dir / 'data')).exists():
     data_dir.mkdir()
@@ -19,7 +21,7 @@ if not (data_dir := (cur_dir / 'data')).exists():
 with open(cur_dir / 'config' / 'account.txt') as f:
     accounts = [x.strip() for x in f.readlines() if x != '']
 
-logger.info(f'共 {len(accounts)} 个账号，运行时间约{int(len(accounts)/2)}分钟')
+logger.info(f'共 {len(accounts)} 个账号，运行时间约{int(len(accounts) / 2)}分钟')
 logger.info(f'accounts: {accounts}')
 
 start_datetime = datetime.now().strftime('%Y-%m-%d-%H:%M:%S')
@@ -28,8 +30,8 @@ chrome = ChromeBrowser(selector=selector, timeout=60)
 chrome.open('https://union.bytedance.com/open/portal/index/?appId=3000&notHasBroker=&notHasRecruitBroker=')
 
 chrome.click('密码登录')
-chrome.send('手机号', os.getenv('ACCOUNT'))
-chrome.send('密码', os.getenv('PASSWORD'))
+chrome.send('手机号', acc['ACCOUNT'])
+chrome.send('密码', acc['PASSWORD'])
 chrome.click('空白处')
 chrome.click('确认登录')
 
