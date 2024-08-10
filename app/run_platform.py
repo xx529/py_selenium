@@ -102,7 +102,8 @@ for streamer_id in accounts:
     chrome.wait(1)
 
 chrome.quit()
+file = f'{str(cur_dir / start_datetime)}.xlsx'
 logger.info('数据收集完成')
 
-post_process_platform_data(pd.concat(df_ls)).to_excel(f'{str(cur_dir / start_datetime)}.xlsx', index=False)
-logger.info('完成，数据已保存')
+post_process_platform_data(pd.concat(df_ls)).to_excel(file, index=False)
+logger.info(f'完成，数据已保存到：{file}')
