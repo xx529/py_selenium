@@ -21,7 +21,7 @@ class ElementSelector(BaseModel):
         return self.name2ele.get(name)
 
 
-selector = ElementSelector(elements=[
+platform_selector = ElementSelector(elements=[
     Element(
         name='密码登录',
         key='/html/body/div[1]/div/div[2]/div[4]/div[2]/div[1]/div[3]'
@@ -95,5 +95,32 @@ selector = ElementSelector(elements=[
     Element(
         name='表格首序号',
         key='//*[@id="semiTabPanelvideo_data"]/div/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[1]/div/table/tbody/tr[1]/td[1]/div'
+    )
+])
+
+creator_selector = ElementSelector(elements=[
+    Element(
+        name='我是机构',
+        key='//*[@id="sub-app"]/div/div[2]/div[3]/div/div[1]/div[2]/div'
+    ),
+    Element(
+        name='达人列表',
+        key='//*[@id="root"]/div/div[2]/div[2]/div/div/div/div/ul/li[2]/ul/li[1]'
+    ),
+    Element(
+        name='达人搜索（激活前）',
+        key='//*[@id="root"]/div/div/div[2]/div[1]/span/div[2]/div[1]/div/span',
+    ),
+    Element(
+        name='达人搜索（激活后）',
+        key='//*[@id="root"]/div/div/div[2]/div[1]/span/div[2]/div[1]/div/div/input'
+    ),
+    Element(
+        name='主播详情',
+        key='//*[@id="root"]/div/div/div[3]/div/div/div/div/div/div/div[1]/div/table/tbody/tr/td[6]/div/button'
+    ),
+    Element(
+        name='视频数量',
+        key='//*[@id="sub-app"]/div/div[2]/div/div[2]/div/div/div/div/div/div[2]/div/div/div/div[1]/div[1]/div/span[1]'
     )
 ])

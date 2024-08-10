@@ -2,3 +2,4 @@ config/.env
 config/account.txt
 *.csv
 *.xlsx
+*.txt

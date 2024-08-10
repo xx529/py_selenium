@@ -5,21 +5,19 @@ import pandas as pd
 from loguru import logger
 
 from driver import ChromeBrowser
-from elements import selector
-from process import process_data
+from elements import platform_selector
+from process import post_process_platform_data
 
 cur_dir = Path(__file__).parent.parent
 
-acc = {}
-with open(cur_dir / 'config' / '.env') as f:
-    for line in f.readlines():
-        key, value = line.strip().split('=')
-        acc[key] = value
+ACCOUNT = input('请输入账号：')
+PASSWORD = input('请输入密码：')
 
-if not (data_dir := (cur_dir / 'data')).exists():
-    data_dir.mkdir()
+if not (acc_file := cur_dir / 'account.txt').exists():
+    logger.error(f'账号文件不存在：{acc_file}')
+    exit(0)
 
-with open(cur_dir / 'config' / 'account.txt') as f:
+with open(acc_file) as f:
     accounts = [x.strip() for x in f.readlines() if x != '']
 
 logger.info(f'共 {len(accounts)} 个账号，运行时间约{int(len(accounts) / 2)}分钟')
@@ -27,12 +25,12 @@ logger.info(f'accounts: {accounts}')
 
 start_datetime = datetime.now().strftime('%Y-%m-%d-%H_%M_%S')
 
-chrome = ChromeBrowser(selector=selector, timeout=60)
+chrome = ChromeBrowser(selector=platform_selector, timeout=60)
 chrome.open('https://union.bytedance.com/open/portal/index/?appId=3000&notHasBroker=&notHasRecruitBroker=')
 
 chrome.click('密码登录')
-chrome.send('手机号', acc['ACCOUNT'])
-chrome.send('密码', acc['PASSWORD'])
+chrome.send('手机号', ACCOUNT)
+chrome.send('密码', PASSWORD)
 chrome.click('空白处')
 chrome.click('确认登录')
 
@@ -106,5 +104,5 @@ for streamer_id in accounts:
 chrome.quit()
 logger.info('数据收集完成')
 
-process_data(pd.concat(df_ls)).to_excel(f'{str(data_dir / start_datetime)}.xlsx', index=False)
+post_process_platform_data(pd.concat(df_ls)).to_excel(f'{str(cur_dir / start_datetime)}.xlsx', index=False)
 logger.info('完成，数据已保存')
