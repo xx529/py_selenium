@@ -4,3 +4,5 @@ config/account.txt
 *.xlsx
 *.txt
 *.bat
+*.doc
+*.docx
