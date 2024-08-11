@@ -1,6 +1,7 @@
 import random
 import time
 from io import StringIO
+from typing import List
 
 import pandas as pd
 from loguru import logger
@@ -11,7 +12,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from tenacity import retry, stop_after_attempt
 
-from elements import ElementSelector
+from app.elements import ElementSelector
 
 
 class ChromeBrowser:
@@ -47,6 +48,12 @@ class ChromeBrowser:
         return self
 
     @retry(stop=stop_after_attempt(3))
+    def get_elements(self, name: str, timeout: int = None) -> List[WebElement]:
+        e = self.selector.get(name)
+        elements = WebDriverWait(self.b, timeout or self.timeout).until(EC.visibility_of_all_elements_located((e.by, e.key)))
+        return elements
+
+    @retry(stop=stop_after_attempt(3))
     def get_element(self, name: str, timeout: int = None) -> WebElement:
         e = self.selector.get(name)
         element = WebDriverWait(self.b, timeout or self.timeout).until(EC.visibility_of_element_located((e.by, e.key)))
@@ -79,6 +86,10 @@ class ChromeBrowser:
             logger.info(f'等待 {seconds - i} 秒')
             time.sleep(1)
         return
+
+    def scroll_to_button(self):
+        logger.info('滚动到底部')
+        self.b.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 
     def switch_to_next_window(self, wait: int = 2):
         logger.info('切换到下一个窗口')

@@ -122,5 +122,34 @@ creator_selector = ElementSelector(elements=[
     Element(
         name='视频数量',
         key='//*[@id="sub-app"]/div/div[2]/div/div[2]/div/div/div/div/div/div[2]/div/div/div/div[1]/div[1]/div/span[1]'
+    ),
+    Element(
+        name='平台通知',
+        key='//*[@id="dialog-0"]/div/div[2]/div/div/div[2]/button[1]'
+    ),
+    Element(
+        name='搜索弹出框',
+        key='/html/body/div[6]/div/div/div/div/div/div/div'
+    ),
+    Element(
+        name='筛选时间',
+        key='//*[@id="sub-app"]/div/div[2]/div/div[2]/div/div/div/div/div/div[2]/div/div/div/div[1]/div[2]/div[1]/button'
+    ),
+    Element(
+        name='30天',
+        key='/html/body/div[8]/div/div/div/div/div/div[2]/div[2]/div/div[3]'
+    ),
+    Element(
+        name='空白',
+        key='//*[@id="sub-app"]/div/div[2]/div/div[2]/div/div/div/div/div/div[1]'
+    ),
+    Element(
+        name='视频统计',
+        key='//*[@id="sub-app"]/div/div[2]/div/div[2]/div/div/div/div/div/div[2]/div/div/div/div[1]/div[1]/div/span[1]'
+    ),
+    Element(
+        name='视频明细',
+        by=By.CLASS_NAME,
+        key='video-detail-small'
     )
 ])
