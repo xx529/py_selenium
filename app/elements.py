@@ -129,7 +129,7 @@ creator_selector = ElementSelector(elements=[
     ),
     Element(
         name='搜索弹出框',
-        key='/html/body/div[6]/div/div/div/div/div/div/div'
+        key='/html/body/div[7]/div'
     ),
     Element(
         name='筛选时间',
@@ -137,7 +137,8 @@ creator_selector = ElementSelector(elements=[
     ),
     Element(
         name='30天',
-        key='/html/body/div[8]/div/div/div/div/div/div[2]/div[2]/div/div[3]'
+        # key='/html/body/div[8]/div/div/div/div/div/div[2]/div[2]/div/div[3]'
+        key='/html/body/div[7]/div/div/div/div/div/div[2]/div[2]/div/div[3]'
     ),
     Element(
         name='空白',
@@ -151,5 +152,15 @@ creator_selector = ElementSelector(elements=[
         name='视频明细',
         by=By.CLASS_NAME,
         key='video-detail-small'
+    ),
+    Element(
+        name='统计元素',
+        key='small-detail-count',
+        by=By.CLASS_NAME
+    ),
+    Element(
+        name='视频标题',
+        key='detail-title-jump',
+        by=By.CLASS_NAME
     )
 ])
