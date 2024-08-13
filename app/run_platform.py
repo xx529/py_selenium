@@ -20,6 +20,10 @@ if not (acc_file := cur_dir / 'account.txt').exists():
 with open(acc_file) as f:
     accounts = [x.strip() for x in f.readlines() if x != '']
 
+if len(accounts) == 0:
+    logger.error('没有需要执行的账号')
+    exit(0)
+
 logger.info(f'共 {len(accounts)} 个账号，运行时间约{int(len(accounts) / 2)}分钟')
 logger.info(f'accounts: {accounts}')
 
@@ -40,73 +44,76 @@ chrome.click('跳过引导', error='ignore', timeout=5)
 chrome.click('右侧弹出框', error='ignore', timeout=5)
 
 df_ls = []
+try:
+    for streamer_id in accounts:
+        logger.info(f'收集主播ID：{streamer_id}')
 
-for streamer_id in accounts:
-    logger.info(f'收集主播ID：{streamer_id}')
+        chrome.click('主播列表空白处')
+        chrome.click('搜索主播框')
+        chrome.send('搜索主播框（激活后）', streamer_id)
+        chrome.wait(2)
+        chrome.enter('搜索主播框（激活后）')
+        chrome.wait(2)
 
-    chrome.click('主播列表空白处')
-    chrome.click('搜索主播框')
-    chrome.send('搜索主播框（激活后）', streamer_id)
-    chrome.wait(2)
-    chrome.enter('搜索主播框（激活后）')
-    chrome.wait(2)
+        try_count = 3
+        while True:
+            if try_count == 0:
+                break
 
-    try_count = 3
-    while True:
+            if chrome.get_element('主播ID').text == streamer_id:
+                break
+            else:
+                logger.warning(f'未找到主播ID：{streamer_id}')
+                chrome.click('主播列表空白处')
+                chrome.wait(1)
+                chrome.click('搜索主播框')
+                chrome.send('搜索主播框（激活后）', streamer_id)
+                chrome.wait(2)
+                chrome.enter('搜索主播框（激活后）')
+                chrome.wait(2)
+
+            try_count -= 1
+
         if try_count == 0:
-            break
+            logger.error(f'未找到主播ID：{streamer_id} 跳过该ID ')
+            continue
 
-        if chrome.get_element('主播ID').text == streamer_id:
-            break
-        else:
-            logger.warning(f'未找到主播ID：{streamer_id}')
-            chrome.click('主播列表空白处')
+        chrome.click('主播详情')
+        chrome.wait(2)
+        chrome.switch_to_next_window()
+
+        chrome.click('视频作品')
+        chrome.wait(1)
+        total = int(chrome.get_element('总数统计').text.split('·')[-1].replace('个', ''))
+        logger.info(f'total: {total}')
+
+        if total == 0:
+            chrome.switch_to_last_window()
             chrome.wait(1)
-            chrome.click('搜索主播框')
-            chrome.send('搜索主播框（激活后）', streamer_id)
-            chrome.wait(2)
-            chrome.enter('搜索主播框（激活后）')
-            chrome.wait(2)
+            continue
 
-        try_count -= 1
+        cur_page = 0
+        while True:
+            chrome.wait_equal('表格首序号', str(cur_page * 10 + 1))
 
-    if try_count == 0:
-        logger.error(f'未找到主播ID：{streamer_id} 跳过该ID ')
-        continue
+            df = chrome.get_table('作品表格')
+            df['抖音号'] = streamer_id
+            df_ls.append(df)
+            total -= 10
 
-    chrome.click('主播详情')
-    chrome.wait(2)
-    chrome.switch_to_next_window()
+            if total > 0:
+                cur_page += 1
+                chrome.click('作品列表下一页')
+            else:
+                break
 
-    chrome.click('视频作品')
-    chrome.wait(1)
-    total = int(chrome.get_element('总数统计').text.split('·')[-1].replace('个', ''))
-    logger.info(f'total: {total}')
-
-    if total == 0:
         chrome.switch_to_last_window()
         chrome.wait(1)
-        continue
 
-    cur_page = 0
-    while True:
-        chrome.wait_equal('表格首序号', str(cur_page * 10 + 1))
-
-        df = chrome.get_table('作品表格')
-        df['抖音号'] = streamer_id
-        df_ls.append(df)
-        total -= 10
-
-        if total > 0:
-            cur_page += 1
-            chrome.click('作品列表下一页')
-        else:
-            break
-
-    chrome.switch_to_last_window()
-    chrome.wait(1)
-
-chrome.quit()
+except Exception as e:
+    logger.error(f'发生错误：{e}')
+finally:
+    chrome.quit()
 
 if len(df_ls) == 0:
     logger.warning('未收集到数据')
