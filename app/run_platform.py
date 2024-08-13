@@ -8,6 +8,8 @@ from driver import ChromeBrowser
 from elements import platform_selector
 from process import post_process_platform_data
 
+
+
 cur_dir = Path(__file__).parent.parent
 
 ACCOUNT = input('请输入账号：')
