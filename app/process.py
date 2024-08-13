@@ -23,6 +23,7 @@ def post_process_platform_data(df: pd.DataFrame):
     df['发布日期'] = df['视频'].apply(split_datetime)
     df['视频标题'] = df['视频'].apply(split_title)
     df = df.rename(columns={'播放量': '抖音播放量'})
+    df = df.drop_duplicates(subset=['发布日期', '视频标题', '抖音号'], keep='last')
     return df[['发布日期', '视频标题', '抖音号', '抖音播放量', '推荐播放量']]
 
 

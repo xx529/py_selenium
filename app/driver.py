@@ -51,7 +51,8 @@ class ChromeBrowser:
     @retry(stop=stop_after_attempt(3))
     def get_elements(self, name: str, timeout: int = None) -> List[WebElement]:
         e = self.selector.get(name)
-        elements = WebDriverWait(self.b, timeout or self.timeout).until(ec.visibility_of_all_elements_located((e.by, e.key)))
+        elements = WebDriverWait(self.b, timeout or self.timeout).until(
+            ec.visibility_of_all_elements_located((e.by, e.key)))
         return elements
 
     @retry(stop=stop_after_attempt(3))
