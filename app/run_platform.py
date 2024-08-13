@@ -59,7 +59,7 @@ for streamer_id in accounts:
         if chrome.get_element('主播ID').text == streamer_id:
             break
         else:
-            logger.info(f'未找到主播ID：{streamer_id}')
+            logger.warning(f'未找到主播ID：{streamer_id}')
             chrome.click('主播列表空白处')
             chrome.wait(1)
             chrome.click('搜索主播框')
@@ -84,6 +84,8 @@ for streamer_id in accounts:
     logger.info(f'total: {total}')
 
     if total == 0:
+        chrome.switch_to_last_window()
+        chrome.wait(1)
         continue
 
     cur_page = 0
