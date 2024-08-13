@@ -8,11 +8,11 @@ from loguru import logger
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.ui import WebDriverWait
 from tenacity import retry, stop_after_attempt
 
-from app.elements import ElementSelector
+from elements import ElementSelector
 
 
 class ChromeBrowser:
@@ -42,7 +42,8 @@ class ChromeBrowser:
     def send(self, name: str, value: str):
         logger.info(f'向`{name}`输入`{value}`')
         e = self.get_element(name)
-        e.clear()
+        e.send_keys(Keys.CONTROL + "a")
+        e.send_keys(Keys.DELETE)
         e.send_keys(value)
         time.sleep(random.random())
         return self
@@ -50,7 +51,7 @@ class ChromeBrowser:
     @retry(stop=stop_after_attempt(3))
     def get_elements(self, name: str, timeout: int = None) -> List[WebElement]:
         e = self.selector.get(name)
-        elements = WebDriverWait(self.b, timeout or self.timeout).until(EC.visibility_of_all_elements_located((e.by, e.key)))
+        elements = WebDriverWait(self.b, timeout or self.timeout).until(ec.visibility_of_all_elements_located((e.by, e.key)))
         return elements
 
     @retry(stop=stop_after_attempt(3))
@@ -62,13 +63,13 @@ class ChromeBrowser:
     @retry(stop=stop_after_attempt(3))
     def get_element(self, name: str, timeout: int = None) -> WebElement:
         e = self.selector.get(name)
-        element = WebDriverWait(self.b, timeout or self.timeout).until(EC.visibility_of_element_located((e.by, e.key)))
+        element = WebDriverWait(self.b, timeout or self.timeout).until(ec.visibility_of_element_located((e.by, e.key)))
         return element
 
     @retry(stop=stop_after_attempt(3))
     def get_clickable_element(self, name: str, timeout: int = None):
         e = self.selector.get(name)
-        element = WebDriverWait(self.b, timeout or self.timeout).until(EC.element_to_be_clickable((e.by, e.key)))
+        element = WebDriverWait(self.b, timeout or self.timeout).until(ec.element_to_be_clickable((e.by, e.key)))
         return element
 
     def enter(self, name: str):
@@ -83,7 +84,7 @@ class ChromeBrowser:
     def wait_equal(self, name: str, value: str):
         logger.info(f'等待`{name}`的值等于`{value}`')
         e = self.selector.get(name)
-        WebDriverWait(self.b, self.timeout).until(EC.text_to_be_present_in_element((e.by, e.key), value))
+        WebDriverWait(self.b, self.timeout).until(ec.text_to_be_present_in_element((e.by, e.key), value))
         return self
 
     @staticmethod

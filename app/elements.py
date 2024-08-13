@@ -95,6 +95,10 @@ platform_selector = ElementSelector(elements=[
     Element(
         name='表格首序号',
         key='//*[@id="semiTabPanelvideo_data"]/div/div/div[2]/div[3]/div/div/div/div/div/div/div/div/div[1]/div/table/tbody/tr[1]/td[1]/div'
+    ),
+    Element(
+        name='主播列表空白处',
+        key='//*[@id="sub_menu_warp"]/h5'
     )
 ])
 

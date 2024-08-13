@@ -44,6 +44,7 @@ df_ls = []
 for streamer_id in accounts:
     logger.info(f'收集主播ID：{streamer_id}')
 
+    chrome.click('主播列表空白处')
     chrome.click('搜索主播框')
     chrome.send('搜索主播框（激活后）', streamer_id)
     chrome.wait(2)
@@ -59,6 +60,8 @@ for streamer_id in accounts:
             break
         else:
             logger.info(f'未找到主播ID：{streamer_id}')
+            chrome.click('主播列表空白处')
+            chrome.wait(1)
             chrome.click('搜索主播框')
             chrome.send('搜索主播框（激活后）', streamer_id)
             chrome.wait(2)
@@ -102,8 +105,11 @@ for streamer_id in accounts:
     chrome.wait(1)
 
 chrome.quit()
-file = f'{str(cur_dir / start_datetime)}.xlsx'
-logger.info('数据收集完成')
 
-post_process_platform_data(pd.concat(df_ls)).to_excel(file, index=False)
-logger.info(f'完成，数据已保存到：{file}')
+if len(df_ls) == 0:
+    logger.warning('未收集到数据')
+else:
+    file = f'{str(cur_dir / start_datetime)}.xlsx'
+    logger.info('数据收集完成')
+    post_process_platform_data(pd.concat(df_ls)).to_excel(file, index=False)
+    logger.info(f'完成，数据已保存到：{file}')
