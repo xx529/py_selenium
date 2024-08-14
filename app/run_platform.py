@@ -17,9 +17,6 @@ if not (log_dir := cur_dir / 'log').exists():
 logger.add('log/platform.log', rotation='10 MB')
 logger.info('开始 -----------------------------------')
 
-ACCOUNT = input('请输入账号：')
-PASSWORD = input('请输入密码：')
-
 if not (acc_file := cur_dir / 'platform.xlsx').exists():
     logger.error(f'账号文件不存在：{acc_file}')
     exit(0)
@@ -28,12 +25,16 @@ df_data = pd.read_excel(acc_file, dtype='str')
 df_data = df_data.drop_duplicates(subset=['抖音号'], ignore_index=True)
 if '备注' not in df_data.columns:
     df_data['备注'] = ''
+df_data['备注'] = df_data['备注'].fillna('')
 
 if len(df_data) == 0 or sum(df_data['备注'] == '') == 0:
     logger.info('没有需要执行的账号')
     exit(0)
 
 logger.info(f'共 {len(df_data)} 个账号')
+
+ACCOUNT = input('请输入账号：')
+PASSWORD = input('请输入密码：')
 
 chrome = ChromeBrowser(selector=platform_selector, timeout=60)
 chrome.open('https://union.bytedance.com/open/portal/index/?appId=3000&notHasBroker=&notHasRecruitBroker=')
@@ -137,8 +138,12 @@ else:
     logger.info('数据收集完成')
     df_result = pd.concat(df_ls)
     df_result = df_result[df_result['抖音号'] != streamer_id]
-    post_process_platform_data(df_result).to_excel(file, index=False)
-    logger.info(f'完成，数据已保存到：{file}')
+
+    if len(df_result) == 0:
+        logger.warning('未收集到数据')
+    else:
+        post_process_platform_data(df_result).to_excel(file, index=False)
+        logger.info(f'完成，数据已保存到：{file}')
 
 df_data.to_excel(acc_file, index=False)
 logger.info('结束 -----------------------------------')
