@@ -140,9 +140,20 @@ creator_selector = ElementSelector(elements=[
         key='//*[@id="sub-app"]/div/div[2]/div/div[2]/div/div/div/div/div/div[2]/div/div/div/div[1]/div[2]/div[1]/button'
     ),
     Element(
+        name='7天',
+        key='/html/body/div[7]/div/div/div/div/div/div[2]/div[2]/div/div[5]'
+    ),
+    Element(
+        name='14天',
+        key='/html/body/div[7]/div/div/div/div/div/div[2]/div[2]/div/div[4]'
+    ),
+    Element(
         name='30天',
-        # key='/html/body/div[8]/div/div/div/div/div/div[2]/div[2]/div/div[3]'
         key='/html/body/div[7]/div/div/div/div/div/div[2]/div[2]/div/div[3]'
+    ),
+    Element(
+        name='90天',
+        key='/html/body/div[7]/div/div/div/div/div/div[2]/div[2]/div/div[2]'
     ),
     Element(
         name='空白',

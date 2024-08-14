@@ -1,4 +1,6 @@
 import re
+from datetime import datetime
+from typing import List
 
 import pandas as pd
 
@@ -27,12 +29,23 @@ def post_process_platform_data(df: pd.DataFrame):
     return df[['发布日期', '视频标题', '抖音号', '抖音播放量', '推荐播放量']]
 
 
+def get_max_delta_days(ls: List):
+    now = datetime.now()
+    datetime_ls = [x for x in pd.to_datetime(ls) if x is not pd.NaT]
+    delta_days_ls = [(now - x).days for x in datetime_ls]
+    if len(delta_days_ls) == 0:
+        return 0
+    else:
+        return max(delta_days_ls)
+
+
 def pre_process_creator_data(df: pd.DataFrame):
     if '备注' not in df.columns:
         df['备注'] = ''
-    df = df.dropna(subset=['抖音号']).reset_index()
+    df['备注'] = df['备注'].fillna('')
+    df = df.dropna(subset=['抖音号']).reset_index(drop=True)
     df['抖音号'] = df['抖音号'].astype(str)
     df['抖音播放量'] = df['抖音播放量'].fillna(0).astype(int)
-    df['发布日期'] = df['发布日期'].fillna('')
+    df['发布日期'] = df['发布日期'].fillna('').astype(str)
     df.loc[df.duplicated(), '备注'] = '重复'
     return df
