@@ -51,7 +51,7 @@ chrome.click('跳过引导', error='ignore', timeout=5)
 chrome.click('右侧弹出框', error='ignore', timeout=5)
 
 df_ls = []
-streamer_id = ''
+drop_streamer_id = None
 try:
     for idx, (streamer_id, state) in df_data[['抖音号', '备注']].copy(deep=True).iterrows():
         logger.info(f'开始第：{idx + 1} 个抖音号')
@@ -127,6 +127,7 @@ try:
         chrome.wait(1)
 
 except Exception as e:
+    drop_streamer_id = streamer_id
     logger.error(f'发生错误：{e}')
 finally:
     chrome.quit()
@@ -137,7 +138,9 @@ else:
     file = f'{str(cur_dir / start_datetime)}.xlsx'
     logger.info('数据收集完成')
     df_result = pd.concat(df_ls)
-    df_result = df_result[df_result['抖音号'] != streamer_id]
+
+    if drop_streamer_id is not None:
+        df_result = df_result[df_result['抖音号'] != drop_streamer_id]
 
     if len(df_result) == 0:
         logger.warning('未收集到数据')
