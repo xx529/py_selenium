@@ -22,14 +22,17 @@ df_group = df_group[df_group['备注'].apply(lambda x: sum([0 if i else 1 for i 
 df_group = df_group.drop('备注', axis=1)
 df_group = df_group.reset_index(drop=True)
 logger.info('处理数据')
+logger.info(f'共{len(df_group)}个抖音号需要收集')
+
+if len(df_group) == 0:
+    logger.info('没有需要执行的抖音号')
+    exit(0)
 
 chrome = ChromeBrowser(selector=creator_selector, timeout=60)
 chrome.open('https://creator.douyin.com/')
 
 chrome.click('平台通知')
 chrome.click('达人列表')
-
-logger.info(f'共{len(df_group)}个抖音号需要收集')
 
 try:
     for idx, (streamer_id, titles, publish_datetime_ls) in df_group.iterrows():
