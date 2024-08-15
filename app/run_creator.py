@@ -72,10 +72,10 @@ try:
                 df.loc[['抖音号'] == streamer_id, '抖音播放量'] = 0
                 continue
 
-            logger.info(f'视频总数：{total}')
             while True:
+                total = int(chrome.get_element('视频统计').text.split()[1])
                 details = chrome.get_elements('视频明细')
-                logger.info(f'当前视频数：{len(details)}')
+                logger.info(f'当前视频数：{len(details)}，共：{total}')
                 if len(details) >= total:
                     break
                 else:
