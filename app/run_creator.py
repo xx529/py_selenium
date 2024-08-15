@@ -28,11 +28,11 @@ if len(df_group) == 0:
     logger.info('没有需要执行的抖音号')
     exit(0)
 
-chrome = ChromeBrowser(selector=creator_selector, timeout=60)
+chrome = ChromeBrowser(selector=creator_selector, timeout=3)
 chrome.open('https://creator.douyin.com/')
 
-chrome.click('平台通知')
-chrome.click('达人列表')
+chrome.click('平台通知', timeout=60)
+chrome.click('达人列表', timeout=60)
 
 try:
     for idx, (streamer_id, titles, publish_datetime_ls) in df_group.iterrows():
