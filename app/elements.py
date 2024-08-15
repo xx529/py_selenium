@@ -133,7 +133,8 @@ creator_selector = ElementSelector(elements=[
     ),
     Element(
         name='搜索弹出框',
-        key='/html/body/div[6]/div/div/div/div/div/div/div'
+        by=By.CSS_SELECTOR,
+        key='.semi-select-option'
     ),
     Element(
         name='筛选时间',
