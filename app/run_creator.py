@@ -55,15 +55,18 @@ try:
 
             max_delta_day = get_max_delta_days(publish_datetime_ls)
             logger.info(f'最大天数：{max_delta_day}')
+            datetime_range_elements = chrome.get_elements('时间范围')
             if max_delta_day <= 7:
-                chrome.click('7天')
+                idx = 4
             elif max_delta_day <= 14:
-                chrome.click('14天')
+                idx = 3
             elif max_delta_day <= 30:
-                chrome.click('30天')
+                idx = 2
             else:
-                chrome.click('90天')
+                idx = 1
 
+            logger.info(f'选择时间范围：{datetime_range_elements[idx].text}')
+            datetime_range_elements[idx].click()
             chrome.wait(2)
 
             if (total := int(chrome.get_element('视频统计').text.split()[1])) == 0:

@@ -157,6 +157,11 @@ creator_selector = ElementSelector(elements=[
         key='/html/body/div[7]/div/div/div/div/div/div[2]/div[2]/div/div[2]'
     ),
     Element(
+        name='时间范围',
+        by=By.CSS_SELECTOR,
+        key='.btn'
+    ),
+    Element(
         name='空白',
         key='//*[@id="sub-app"]/div/div[2]/div/div[2]/div/div/div/div/div/div[1]'
     ),
