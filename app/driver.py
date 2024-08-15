@@ -19,6 +19,7 @@ class ChromeBrowser:
 
     def __init__(self, selector: ElementSelector, timeout=10):
         self.b = webdriver.Chrome()
+        self.b.maximize_window()
         self.selector = selector
         self.timeout = timeout
 
