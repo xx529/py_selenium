@@ -1,4 +1,3 @@
-from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -6,10 +5,10 @@ from loguru import logger
 
 from driver import ChromeBrowser
 from elements import platform_selector
-from process import post_process_platform_data
+from process import pre_process_creator_data
 
 cur_dir = Path(__file__).parent.parent
-start_datetime = datetime.now().strftime('%Y-%m-%d-%H_%M_%S')
+file = cur_dir / 'platform.xlsx'
 
 if not (log_dir := cur_dir / 'log').exists():
     log_dir.mkdir()
@@ -17,22 +16,22 @@ if not (log_dir := cur_dir / 'log').exists():
 logger.add('log/platform.log', rotation='10 MB')
 logger.info('开始 -----------------------------------')
 
-if not (acc_file := cur_dir / 'platform.xlsx').exists():
-    logger.error(f'账号文件不存在：{acc_file}')
+if not file.exists():
+    logger.error(f'账号文件不存在：{file}')
     exit(0)
 
-df_data = pd.read_excel(acc_file, dtype='str')
-df_data = df_data.drop_duplicates(subset=['抖音号'], ignore_index=True)
-if '备注' not in df_data.columns:
-    df_data['备注'] = ''
-df_data['备注'] = df_data['备注'].fillna('')
+df = pre_process_creator_data(pd.read_excel(file))
+df_data = df.groupby('抖音号').agg({'视频标题': list, '备注': list, '发布日期': list}).reset_index()
+df_data = df_data[df_data['备注'].apply(lambda x: sum([0 if i else 1 for i in x])) > 0]
+df_data = df_data.drop('备注', axis=1)
+df_data = df_data.reset_index(drop=True)
+logger.info('处理数据')
 
-if len(df_data) == 0 or sum(df_data['备注'] == '') == 0:
+if len(df_data) == 0:
     logger.info('没有需要执行的账号')
     exit(0)
 
-logger.info(f'共 {len(df_data)} 个账号')
-
+logger.info(f'共{len(df_data)}个抖音号需要收集')
 ACCOUNT = input('请输入账号：')
 PASSWORD = input('请输入密码：')
 
@@ -53,14 +52,10 @@ chrome.click('右侧弹出框', error='ignore', timeout=5)
 df_ls = []
 drop_streamer_id = None
 try:
-    for idx, (streamer_id, state) in df_data[['抖音号', '备注']].copy(deep=True).iterrows():
-        logger.info(f'开始第：{idx + 1} 个抖音号')
+    for idx, (streamer_id, titles, publish_datetime_ls) in df_data[['抖音号', '视频标题', '发布日期']].copy(
+            deep=True).iterrows():
+        logger.info(f'开始第 {idx + 1} 个，抖音号：{streamer_id}')
 
-        if state != '':
-            logger.info(f'主播ID：{streamer_id} {state}')
-            continue
-
-        logger.info(f'收集主播ID：{streamer_id}')
         chrome.click('主播列表空白处')
         chrome.click('搜索主播框')
         chrome.send('搜索主播框（激活后）', streamer_id)
@@ -88,7 +83,10 @@ try:
             try_count -= 1
 
         if try_count == 0:
-            df_data.loc[idx, '备注'] = '未找到ID'
+            index = df['抖音号'] == streamer_id
+            df.loc[index, '备注'] = '未找到抖音号'
+            df.loc[index, '抖音播放量'] = 0
+            df.loc[index, '推荐播放量'] = 0
             logger.warning(f'未找到主播ID：{streamer_id} 跳过该ID ')
             continue
 
@@ -102,7 +100,10 @@ try:
         logger.info(f'total: {total}')
 
         if total == 0:
-            df_data.loc[idx, '备注'] = '未找到视频'
+            index = df['抖音号'] == streamer_id
+            df.loc[index, '备注'] = '未找到视频'
+            df.loc[index, '抖音播放量'] = 0
+            df.loc[index, '推荐播放量'] = 0
             chrome.switch_to_last_window()
             chrome.wait(1)
             continue
@@ -122,6 +123,7 @@ try:
             else:
                 break
 
+        # TODO 逐个更新
         df_data.loc[idx, '备注'] = '完成'
         chrome.switch_to_last_window()
         chrome.wait(1)
@@ -135,7 +137,6 @@ finally:
 if len(df_ls) == 0:
     logger.warning('未收集到数据')
 else:
-    file = f'{str(cur_dir / start_datetime)}.xlsx'
     logger.info('数据收集完成')
     df_result = pd.concat(df_ls)
 
@@ -145,8 +146,7 @@ else:
     if len(df_result) == 0:
         logger.warning('未收集到数据')
     else:
-        post_process_platform_data(df_result).to_excel(file, index=False)
-        logger.info(f'完成，数据已保存到：{file}')
+        df.to_excel(file, index=False)
+        logger.info(f'完成，数据已更新到：{file}')
 
-df_data.to_excel(acc_file, index=False)
 logger.info('结束 -----------------------------------')
