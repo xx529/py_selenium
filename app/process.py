@@ -6,6 +6,7 @@ import pandas as pd
 
 
 def normalize_number(x):
+    x = x.replace(',', '')
     return float(x[:-1]) * 10000 if str(x).endswith('万') else x
 
 
