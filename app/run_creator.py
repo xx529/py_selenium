@@ -1,3 +1,4 @@
+from collections import deque
 from pathlib import Path
 
 import pandas as pd
@@ -75,11 +76,16 @@ try:
                 df.loc[['抖音号'] == streamer_id, '抖音播放量'] = 0
                 continue
 
+            q = deque(maxlen=10)
             while True:
                 total = int(chrome.get_element('视频统计').text.split()[1])
                 details = chrome.get_elements('视频明细')
                 logger.info(f'当前视频数：{len(details)}，共：{total}')
+                q.append((total, len(details)))
                 if len(details) >= total:
+                    break
+                if len(q) == 10 and len(set(list(q))) == 1:
+                    logger.error('统计数据出错，跳出检测循环')
                     break
                 else:
                     chrome.scroll_to_button()
