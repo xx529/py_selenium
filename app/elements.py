@@ -81,6 +81,21 @@ platform_selector = ElementSelector(elements=[
         by=By.CLASS_NAME
     ),
     Element(
+        name='表格行',
+        key='semi-table-row',
+        by=By.CLASS_NAME
+    ),
+    Element(
+        name='单元格',
+        key='semi-table-row-cell',
+        by=By.CLASS_NAME
+    ),
+    Element(
+        name='标题',
+        key='span',
+        by=By.TAG_NAME
+    ),
+    Element(
         name='总数统计',
         key='//*[@id="semiTabPanelvideo_data"]/div/div/div[2]/div[1]/div/div[2]'
     ),

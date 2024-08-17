@@ -5,7 +5,7 @@ from loguru import logger
 
 from driver import ChromeBrowser
 from elements import platform_selector
-from process import pre_process_creator_data
+from process import pre_process_creator_data, normalize_number
 
 cur_dir = Path(__file__).parent.parent
 file = cur_dir / 'platform.xlsx'
@@ -21,6 +21,8 @@ if not file.exists():
     exit(0)
 
 df = pre_process_creator_data(pd.read_excel(file))
+df['抖音播放量'] = df['抖音播放量'].fillna(0)
+df['推荐播放量'] = df['推荐播放量'].fillna(0)
 df_data = df.groupby('抖音号').agg({'视频标题': list, '备注': list, '发布日期': list}).reset_index()
 df_data = df_data[df_data['备注'].apply(lambda x: sum([0 if i else 1 for i in x])) > 0]
 df_data = df_data.drop('备注', axis=1)
@@ -32,8 +34,11 @@ if len(df_data) == 0:
     exit(0)
 
 logger.info(f'共{len(df_data)}个抖音号需要收集')
-ACCOUNT = input('请输入账号：')
-PASSWORD = input('请输入密码：')
+# ACCOUNT = input('请输入账号：')
+# PASSWORD = input('请输入密码：')
+
+ACCOUNT = '15100241846'
+PASSWORD = 'aa6621623'
 
 chrome = ChromeBrowser(selector=platform_selector, timeout=60)
 chrome.open('https://union.bytedance.com/open/portal/index/?appId=3000&notHasBroker=&notHasRecruitBroker=')
@@ -49,8 +54,7 @@ chrome.click('主播列表')
 chrome.click('跳过引导', error='ignore', timeout=5)
 chrome.click('右侧弹出框', error='ignore', timeout=5)
 
-df_ls = []
-drop_streamer_id = None
+
 try:
     for idx, (streamer_id, titles, publish_datetime_ls) in df_data[['抖音号', '视频标题', '发布日期']].copy(
             deep=True).iterrows():
@@ -109,12 +113,20 @@ try:
             continue
 
         cur_page = 0
+        title2data = {}
         while True:
             chrome.wait_equal('表格首序号', str(cur_page * 10 + 1))
+            table = chrome.get_element('作品表格')
+            rows = chrome.get_sub_elements(table, '表格行')[1:]
 
-            df = chrome.get_table('作品表格')
-            df['抖音号'] = streamer_id
-            df_ls.append(df)
+            for row in rows:
+                cells = chrome.get_sub_elements(row, '单元格')
+                title = cells[1].find_element(by='tag name', value='span').text
+                title2data[title] = {
+                    '抖音播放量': normalize_number(cells[2].text),
+                    '推荐播放量': normalize_number(cells[3].text)
+                }
+
             total -= 10
 
             if total > 0:
@@ -124,29 +136,26 @@ try:
                 break
 
         # TODO 逐个更新
-        df_data.loc[idx, '备注'] = '完成'
+        for t in titles:
+            index = ((df['视频标题'] == t) & (df['抖音号'] == streamer_id))
+            if t in title2data:
+                df.loc[index, '备注'] = '完成'
+                df.loc[index, '抖音播放量'] = int(title2data[t]['抖音播放量'])
+                df.loc[index, '推荐播放量'] = int(title2data[t]['推荐播放量'])
+            else:
+                df.loc[index, '备注'] = '未找到视频'
+                df.loc[index, '抖音播放量'] = 0
+                df.loc[index, '推荐播放量'] = 0
+
         chrome.switch_to_last_window()
         chrome.wait(1)
 
 except Exception as e:
-    drop_streamer_id = streamer_id
     logger.error(f'发生错误：{e}')
 finally:
     chrome.quit()
 
-if len(df_ls) == 0:
-    logger.warning('未收集到数据')
-else:
-    logger.info('数据收集完成')
-    df_result = pd.concat(df_ls)
-
-    if drop_streamer_id is not None:
-        df_result = df_result[df_result['抖音号'] != drop_streamer_id]
-
-    if len(df_result) == 0:
-        logger.warning('未收集到数据')
-    else:
-        df.to_excel(file, index=False)
-        logger.info(f'完成，数据已更新到：{file}')
+df.to_excel(file, index=False)
+logger.info(f'完成，数据已更新到：{file}')
 
 logger.info('结束 -----------------------------------')
