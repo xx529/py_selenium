@@ -132,7 +132,6 @@ try:
             else:
                 break
 
-        # TODO 逐个更新
         for t in titles:
             index = ((df['视频标题'] == t) & (df['抖音号'] == streamer_id))
             if t in title2data:
