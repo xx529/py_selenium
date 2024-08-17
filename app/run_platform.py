@@ -34,11 +34,8 @@ if len(df_data) == 0:
     exit(0)
 
 logger.info(f'共{len(df_data)}个抖音号需要收集')
-# ACCOUNT = input('请输入账号：')
-# PASSWORD = input('请输入密码：')
-
-ACCOUNT = '15100241846'
-PASSWORD = 'aa6621623'
+ACCOUNT = input('请输入账号：')
+PASSWORD = input('请输入密码：')
 
 chrome = ChromeBrowser(selector=platform_selector, timeout=60)
 chrome.open('https://union.bytedance.com/open/portal/index/?appId=3000&notHasBroker=&notHasRecruitBroker=')
