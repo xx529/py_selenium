@@ -118,7 +118,7 @@ try:
 
             for row in rows:
                 cells = chrome.get_sub_elements(row, '单元格')
-                title = cells[1].find_element(by='tag name', value='span').text
+                title = cells[1].find_element(by='tag name', value='span').text.replace(' ', '')
                 title2data[title] = {
                     '抖音播放量': normalize_number(cells[2].text),
                     '推荐播放量': normalize_number(cells[3].text)

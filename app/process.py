@@ -37,6 +37,7 @@ def pre_process_creator_data(df: pd.DataFrame):
     df = df.dropna(subset=['抖音号']).reset_index(drop=True)
     df['抖音号'] = df['抖音号'].astype(str)
     df['抖音播放量'] = df['抖音播放量'].fillna(0).astype(int)
+    df['视频标题'] = df['视频标题'].astype(str).apply(lambda x: x.replace(' ', ''))
     df['发布日期'] = df['发布日期'].fillna('').astype(str)
     df.loc[df.duplicated(), '备注'] = '重复'
     return df

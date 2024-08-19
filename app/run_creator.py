@@ -94,7 +94,7 @@ try:
             title2count = {}
 
             for detail in details:
-                title = chrome.get_sub_elements(detail, '视频标题')[0].text
+                title = chrome.get_sub_elements(detail, '视频标题')[0].text.replace(' ', '')
                 count = chrome.get_sub_elements(detail, '统计元素')[0].text
                 title2count[title] = normalize_number(count)
 
