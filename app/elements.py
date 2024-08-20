@@ -76,6 +76,10 @@ platform_selector = ElementSelector(elements=[
         key='/html/body/div/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[4]/div/div/div[1]/div[1]/div[2]/div[5]/div'
     ),
     Element(
+        name='主播数据',
+        key='/html/body/div/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[4]/div/div/div[1]/div[1]/div[2]/div[1]/div',
+    ),
+    Element(
         name='作品表格',
         key='semi-table-body',
         by=By.CLASS_NAME
@@ -114,7 +118,51 @@ platform_selector = ElementSelector(elements=[
     Element(
         name='主播列表空白处',
         key='//*[@id="sub_menu_warp"]/h5'
-    )
+    ),
+    Element(
+        name='曝光展现',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[1]/div/div/div/div[1]/div/div[1]/div/div[2]/div[1]/div'
+    ),
+    Element(
+        name='进直播间',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[1]/div/div/div/div[1]/div/div[2]/div/div[2]/div[1]/div'
+    ),
+    Element(
+        name='直播推荐',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[1]/div[3]/span/div'
+    ),
+    Element(
+        name='直播推荐',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[1]/div[3]/span/div'
+    ),
+    Element(
+        name='搜索',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[2]/div[3]/span/div'
+    ),
+    Element(
+        name='其他',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[3]/div[3]/span/div'
+    ),
+    Element(
+        name='关注',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[4]/div[3]/span/div'
+    ),
+    Element(
+        name='视频推荐',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[5]/div[3]/span/div'
+    ),
+    Element(
+        name='同城',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[6]/div[3]/span/div'
+    ),
+    Element(
+        name='个人主页',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[7]/div[3]/span/div'
+    ),
+    Element(
+        name='商业化',
+        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[8]/div[3]/span/div'
+    ),
 ])
 
 creator_selector = ElementSelector(elements=[
