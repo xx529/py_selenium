@@ -1,6 +1,6 @@
 *.csv
 *.xlsx
-*.txt
+psd.txt
 *.bat
 *.doc
 *.docx
