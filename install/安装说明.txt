@@ -1,3 +1,4 @@
-1. 双击 python-3.10.11-amd64，按指示安装
-2. 双击 install.bat 文件
-3. 完成后即可
+1. 安装 chrome 浏览器
+2. 双击 python-3.10.11-amd64，按指示安装
+3. 双击 install.bat 文件
+4. 完成后即可
