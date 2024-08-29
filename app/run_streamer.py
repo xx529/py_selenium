@@ -2,6 +2,7 @@ from pathlib import Path
 
 import pandas as pd
 from loguru import logger
+from selenium.webdriver import Keys
 
 from driver import ChromeBrowser
 from elements import platform_selector
@@ -25,6 +26,12 @@ df = df.fillna('')
 df['抖音号'] = df['抖音号'].astype(str)
 if '备注' not in df.columns:
     df['备注'] = ''
+
+if not isinstance(df['开始时间'][0], str):
+    df['开始时间'] = df['开始时间'].dt.strftime('%Y-%m-%d')
+
+if not isinstance(df['结束时间'][0], str):
+    df['结束时间'] = df['结束时间'].dt.strftime('%Y-%m-%d')
 
 df_data = df[df['备注'] == ''].reset_index(drop=True)
 
@@ -50,7 +57,6 @@ chrome.click('左侧弹出框', error='ignore', timeout=5)
 chrome.click('主播列表')
 chrome.click('跳过引导', error='ignore', timeout=5)
 chrome.click('右侧弹出框', error='ignore', timeout=5)
-
 
 try:
     for idx, streamer_id in enumerate(df_data['抖音号'].tolist()):
@@ -96,6 +102,22 @@ try:
         chrome.click('主播数据')
         chrome.wait(1)
 
+        chrome.click('日期范围')
+        elements = chrome.get_elements('日期输入')
+
+        for i in range(20):
+            elements[0].send_keys(Keys.BACKSPACE)
+        elements[0].send_keys(df[df['抖音号'] == streamer_id]['开始时间'].tolist()[0])
+        chrome.wait(1)
+
+        for i in range(20):
+            elements[1].send_keys(Keys.BACKSPACE)
+        elements[1].send_keys(df[df['抖音号'] == streamer_id]['结束时间'].tolist()[0])
+
+        chrome.wait(1)
+        elements[1].send_keys(Keys.ENTER)
+
+        chrome.wait(3)
         df.loc[index, '曝光展现'] = normalize_number(chrome.get_element('曝光展现').text.replace('人', ''))
         df.loc[index, '进直播间'] = normalize_number(chrome.get_element('进直播间').text.replace('人', ''))
 

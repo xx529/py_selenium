@@ -163,6 +163,15 @@ platform_selector = ElementSelector(elements=[
         name='商业化',
         key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[8]/div[3]/span/div'
     ),
+    Element(
+        name='日期范围',
+        key='//*[@id="anchorDetailContainer"]/div[4]/div/div/div[1]/div[2]/div/span[4]/span'
+    ),
+    Element(
+        name='日期输入',
+        key='ant-calendar-input ',
+        by=By.CLASS_NAME
+    )
 ])
 
 creator_selector = ElementSelector(elements=[
