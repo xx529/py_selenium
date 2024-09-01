@@ -17,8 +17,8 @@ class ElementSelector(BaseModel):
     def model_post_init(self, __context: Any) -> None:
         self.name2ele = {ele.name: ele for ele in self.elements}
 
-    def get(self, name: str) -> Element:
-        return self.name2ele.get(name)
+    def get(self, name: str) -> Element | None:
+        return self.name2ele.get(name, None)
 
 
 platform_selector = ElementSelector(elements=[
