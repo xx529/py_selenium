@@ -171,6 +171,11 @@ platform_selector = ElementSelector(elements=[
         name='日期输入',
         key='ant-calendar-input ',
         by=By.CLASS_NAME
+    ),
+    Element(
+        name='视频发布日期',
+        key='semi2-input-small',
+        by=By.CLASS_NAME
     )
 ])
 
