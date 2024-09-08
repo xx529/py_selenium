@@ -5,7 +5,7 @@ from loguru import logger
 
 from driver import ChromeBrowser
 from elements import platform_selector
-from process import pre_process_creator_data, normalize_number
+from process import normalize_number, pre_process_creator_data
 
 cur_dir = Path(__file__).parent.parent
 file = cur_dir / 'platform.xlsx'
@@ -50,7 +50,6 @@ chrome.click('左侧弹出框', error='ignore', timeout=5)
 chrome.click('主播列表')
 chrome.click('跳过引导', error='ignore', timeout=5)
 chrome.click('右侧弹出框', error='ignore', timeout=5)
-
 
 try:
     for idx, (streamer_id, titles, publish_datetime_ls) in df_data[['抖音号', '视频标题', '发布日期']].copy(
