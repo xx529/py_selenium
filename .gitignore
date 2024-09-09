@@ -10,3 +10,4 @@ psd.txt
 __pycache__
 temp
 .vscode
+/log
