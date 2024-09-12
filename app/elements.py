@@ -128,41 +128,52 @@ platform_selector = ElementSelector(elements=[
         key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[1]/div/div/div/div[1]/div/div[2]/div/div[2]/div[1]/div'
     ),
     Element(
-        name='直播推荐',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[1]/div[3]/span/div'
+        name='观众来源表格',
+        key='webcast-data-browser-component-scene-rich-text-pie-legend',
+        by=By.CLASS_NAME
     ),
     Element(
-        name='直播推荐',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[1]/div[3]/span/div'
+        name='观众来源表格-列名',
+        key='webcast-data-browser-component-scene-rich-text-pie-legend-name',
+        by=By.CLASS_NAME
     ),
     Element(
-        name='搜索',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[2]/div[3]/span/div'
+        name='观众来源表格-数据',
+        key='webcast-data-browser-component-scene-rich-text-pie-trend-value',
+        by=By.CLASS_NAME
     ),
-    Element(
-        name='其他',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[3]/div[3]/span/div'
-    ),
-    Element(
-        name='关注',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[4]/div[3]/span/div'
-    ),
-    Element(
-        name='视频推荐',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[5]/div[3]/span/div'
-    ),
-    Element(
-        name='同城',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[6]/div[3]/span/div'
-    ),
-    Element(
-        name='个人主页',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[7]/div[3]/span/div'
-    ),
-    Element(
-        name='商业化',
-        key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[8]/div[3]/span/div'
-    ),
+    # Element(
+    #     name='直播推荐',
+    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[1]/div[3]/span/div'
+    # ),
+    # Element(
+    #     name='搜索',
+    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[2]/div[3]/span/div'
+    # ),
+    # Element(
+    #     name='其他',
+    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[3]/div[3]/span/div'
+    # ),
+    # Element(
+    #     name='关注',
+    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[4]/div[3]/span/div'
+    # ),
+    # Element(
+    #     name='视频推荐',
+    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[5]/div[3]/span/div'
+    # ),
+    # Element(
+    #     name='同城',
+    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[6]/div[3]/span/div'
+    # ),
+    # Element(
+    #     name='个人主页',
+    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[7]/div[3]/span/div'
+    # ),
+    # Element(
+    #     name='商业化',
+    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[8]/div[3]/span/div'
+    # ),
     Element(
         name='日期范围',
         key='//*[@id="anchorDetailContainer"]/div[4]/div/div/div[1]/div[2]/div/span[4]/span'

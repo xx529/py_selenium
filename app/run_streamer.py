@@ -120,26 +120,22 @@ try:
         chrome.wait(3)
         df.loc[index, '曝光展现'] = normalize_number(chrome.get_element('曝光展现').text.replace('人', ''))
         df.loc[index, '进直播间'] = normalize_number(chrome.get_element('进直播间').text.replace('人', ''))
+        df.loc[index, '直播推荐'] = 0
+        df.loc[index, '视频推荐'] = 0
+        df.loc[index, '其他'] = 0
+        df.loc[index, '搜索'] = 0
+        df.loc[index, '关注'] = 0
+        df.loc[index, '同城'] = 0
+        df.loc[index, '个人主页'] = 0
+        df.loc[index, '商业化'] = 0
 
         if int(normalize_number(chrome.get_element('曝光展现').text.replace('人', ''))) == 0:
-            df.loc[index, '直播推荐'] = 0
-            df.loc[index, '视频推荐'] = 0
-            df.loc[index, '其他'] = 0
-            df.loc[index, '搜索'] = 0
-            df.loc[index, '关注'] = 0
-            df.loc[index, '同城'] = 0
-            df.loc[index, '个人主页'] = 0
-            df.loc[index, '商业化'] = 0
             df.loc[index, '备注'] = '没有数据'
         else:
-            df.loc[index, '直播推荐'] = chrome.get_element('直播推荐').text
-            df.loc[index, '视频推荐'] = chrome.get_element('视频推荐').text
-            df.loc[index, '其他'] = chrome.get_element('其他').text
-            df.loc[index, '搜索'] = chrome.get_element('搜索').text
-            df.loc[index, '关注'] = chrome.get_element('关注').text
-            df.loc[index, '同城'] = chrome.get_element('同城').text
-            df.loc[index, '个人主页'] = chrome.get_element('个人主页').text
-            df.loc[index, '商业化'] = chrome.get_element('商业化').text
+            for e in chrome.get_elements('观众来源表格'):
+                name = chrome.get_sub_elements(e, '观众来源表格-列名')[0].text
+                value = chrome.get_sub_elements(e, '观众来源表格-数据')[0].text
+                df.loc[index, name] = value
             df.loc[index, '备注'] = '完成'
 
         chrome.switch_to_last_window()
