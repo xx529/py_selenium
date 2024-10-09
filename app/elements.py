@@ -57,11 +57,11 @@ platform_selector = ElementSelector(elements=[
     ),
     Element(
         name='搜索主播框',
-        key='/html/body/div/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[2]/form/div[1]/div/div/div[2]/div[1]/div'
+        key='/html/body/div[1]/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div/div[2]/form/div[1]/div/div/div[2]/div[1]/div/span'
     ),
     Element(
         name='搜索主播框（激活后）',
-        key='/html/body/div[1]/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[2]/form/div[1]/div/div/div[2]/div[1]/div/div/input'
+        key='/html/body/div[1]/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div/div[2]/form/div[1]/div/div/div[2]/div[1]/div/div/input'
     ),
     Element(
         name='主播详情',
