@@ -61,33 +61,24 @@ chrome.click('右侧弹出框', error='ignore', timeout=5)
 try:
     for idx, streamer_id in enumerate(df_data['抖音号'].tolist()):
 
-        logger.info(f'开始第 {idx + 1} 个，抖音号：{streamer_id}')
-
-        chrome.click('主播列表空白处')
-        chrome.click('搜索主播框')
-        chrome.send('搜索主播框（激活后）', streamer_id)
-        chrome.wait(2)
-        chrome.enter('搜索主播框（激活后）')
-        chrome.wait(2)
-
         try_count = 3
         while True:
             if try_count == 0:
                 break
 
-            if chrome.get_element('主播ID').text == streamer_id:
+            chrome.click('主播列表空白处')
+            chrome.click('搜索主播框')
+            chrome.send('搜索主播框（激活后）', streamer_id)
+            chrome.wait(2)
+
+            if streamer_id in chrome.get_element('主播ID').text:
+                chrome.enter('搜索主播框（激活后）')
+                chrome.wait(2)
                 break
             else:
                 logger.warning(f'未找到主播ID：{streamer_id}')
-                chrome.click('主播列表空白处')
-                chrome.wait(1)
-                chrome.click('搜索主播框')
-                chrome.send('搜索主播框（激活后）', streamer_id)
-                chrome.wait(2)
-                chrome.enter('搜索主播框（激活后）')
-                chrome.wait(2)
-
-            try_count -= 1
+                try_count -= 1
+                continue
 
         index = df['抖音号'] == streamer_id
         if try_count == 0:

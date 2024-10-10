@@ -16,6 +16,8 @@ class ElementSelector(BaseModel):
 
     def model_post_init(self, __context: Any) -> None:
         self.name2ele = {ele.name: ele for ele in self.elements}
+        if len(self.name2ele) != len(self.elements):
+            raise ValueError('元素名称不能重复')
 
     def get(self, name: str) -> Element | None:
         return self.name2ele.get(name, None)
@@ -65,11 +67,12 @@ platform_selector = ElementSelector(elements=[
     ),
     Element(
         name='主播详情',
-        key='/html/body/div/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[4]/div[2]/div/div/div/div/div[1]/div/table/tbody/tr/td[16]/div/div/button[1]/span'
+        key='/html/body/div[1]/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div/div[4]/div[2]/div/div/div/div/div[1]/div/table/tbody/tr/td[16]/div/div/button[1]'
     ),
     Element(
         name='主播ID',
-        key='//*[@id="root"]/div[2]/div[4]/div[2]/div/div/div/div/div[1]/div/table/tbody/tr/td[1]/div/div/div[2]/div[2]/span[1]/span'
+        by=By.CLASS_NAME,
+        key='semi2-select-option-list'
     ),
     Element(
         name='视频作品',
@@ -142,38 +145,6 @@ platform_selector = ElementSelector(elements=[
         key='webcast-data-browser-component-scene-rich-text-pie-trend-value',
         by=By.CLASS_NAME
     ),
-    # Element(
-    #     name='直播推荐',
-    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[1]/div[3]/span/div'
-    # ),
-    # Element(
-    #     name='搜索',
-    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[2]/div[3]/span/div'
-    # ),
-    # Element(
-    #     name='其他',
-    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[3]/div[3]/span/div'
-    # ),
-    # Element(
-    #     name='关注',
-    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[4]/div[3]/span/div'
-    # ),
-    # Element(
-    #     name='视频推荐',
-    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[5]/div[3]/span/div'
-    # ),
-    # Element(
-    #     name='同城',
-    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[6]/div[3]/span/div'
-    # ),
-    # Element(
-    #     name='个人主页',
-    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[7]/div[3]/span/div'
-    # ),
-    # Element(
-    #     name='商业化',
-    #     key='//*[@id="semiTabPanellive_data"]/div/div/div[3]/div[2]/div[2]/div/div/div[2]/div/div/div[2]/div/div[8]/div[3]/span/div'
-    # ),
     Element(
         name='日期范围',
         key='//*[@id="anchorDetailContainer"]/div[4]/div/div/div[1]/div[2]/div/span[4]/span'
