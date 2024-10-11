@@ -80,7 +80,7 @@ platform_selector = ElementSelector(elements=[
     ),
     Element(
         name='主播数据',
-        key='/html/body/div/section/section/section/div/main/div/div/div[2]/div/div/div[2]/div/div[2]/div[4]/div/div/div[1]/div[1]/div[2]/div[1]/div',
+        key='//*[@id="liveData"]'
     ),
     Element(
         name='作品表格',
