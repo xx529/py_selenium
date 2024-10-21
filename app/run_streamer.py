@@ -105,8 +105,8 @@ try:
             elements[1].send_keys(Keys.BACKSPACE)
         elements[1].send_keys(df[df['抖音号'] == streamer_id]['结束时间'].tolist()[0])
 
-        chrome.wait(1)
-        elements[1].send_keys(Keys.ENTER)
+        chrome.wait(3)
+        elements[1].send_keys(Keys.ESCAPE)
 
         chrome.wait(3)
         df.loc[index, '曝光展现'] = normalize_number(chrome.get_element('曝光展现').text.replace('人', ''))
@@ -123,8 +123,8 @@ try:
         if int(normalize_number(chrome.get_element('曝光展现').text.replace('人', ''))) == 0:
             df.loc[index, '备注'] = '没有数据'
         else:
-            for e in chrome.get_elements('观众来源表格'):
-                name = chrome.get_sub_elements(e, '观众来源表格-列名')[0].text
+            for e in chrome.get_sub_elements(chrome.get_element('观众来源表格'), '观众来源表格-表格行'):
+                name = chrome.get_sub_elements(e, '观众来源表格-列名')[1].text
                 value = chrome.get_sub_elements(e, '观众来源表格-数据')[0].text
                 df.loc[index, name] = value
             df.loc[index, '备注'] = '完成'

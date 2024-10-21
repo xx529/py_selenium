@@ -132,17 +132,23 @@ platform_selector = ElementSelector(elements=[
     ),
     Element(
         name='观众来源表格',
-        key='webcast-data-browser-component-scene-rich-text-pie-legend',
+        # key='webcast-data-browser-component-scene-rich-text-pie-legend',
+        key='whitespace-nowrap',
+        by=By.CLASS_NAME
+    ),
+    Element(
+        name='观众来源表格-表格行',
+        key='items-center',
         by=By.CLASS_NAME
     ),
     Element(
         name='观众来源表格-列名',
-        key='webcast-data-browser-component-scene-rich-text-pie-legend-name',
+        key='mr-2',
         by=By.CLASS_NAME
     ),
     Element(
         name='观众来源表格-数据',
-        key='webcast-data-browser-component-scene-rich-text-pie-trend-value',
+        key='mr-1',
         by=By.CLASS_NAME
     ),
     Element(
