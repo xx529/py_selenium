@@ -120,7 +120,8 @@ platform_selector = ElementSelector(elements=[
     ),
     Element(
         name='主播列表空白处',
-        key='//*[@id="sub_menu_warp"]/h5'
+        key='menu_主播列表',
+        by=By.ID
     ),
     Element(
         name='曝光展现',
