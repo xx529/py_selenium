@@ -131,6 +131,9 @@ try:
             df_table = chrome.get_table('作品表格')
             df_table['播放量'] = df_table['播放量'].astype(str).apply(normalize_number)
             df_table['推荐播放量'] = df_table['推荐播放量'].astype(str).apply(normalize_number)
+            df_table['点赞量'] = df_table['点赞量'].astype(str).apply(normalize_number)
+            df_table['评论量'] = df_table['评论量'].astype(str).apply(normalize_number)
+            df_table['分享量'] = df_table['分享量'].astype(str).apply(normalize_number)
             df_table['抖音号'] = streamer_id
             df_res_ls.append(df_table)
 
