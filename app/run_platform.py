@@ -23,6 +23,9 @@ if not file.exists():
 df = pre_process_creator_data(pd.read_excel(file))
 df['抖音播放量'] = df['抖音播放量'].fillna(0)
 df['推荐播放量'] = df['推荐播放量'].fillna(0)
+df['点赞量'] = df['点赞量'].fillna(0)
+df['评论量'] = df['评论量'].fillna(0)
+df['分享量'] = df['分享量'].fillna(0)
 df_data = df.groupby('抖音号').agg({'视频标题': list, '备注': list, '发布日期': list}).reset_index()
 df_data = df_data[df_data['备注'].apply(lambda x: sum([0 if i else 1 for i in x])) > 0]
 df_data = df_data.drop('备注', axis=1)
@@ -80,6 +83,10 @@ try:
             df.loc[index, '备注'] = '未找到抖音号'
             df.loc[index, '抖音播放量'] = 0
             df.loc[index, '推荐播放量'] = 0
+            df.loc[index, '点赞量'] = 0
+            df.loc[index, '评论量'] = 0
+            df.loc[index, '分享量'] = 0
+
             logger.warning(f'未找到主播ID：{streamer_id} 跳过该ID ')
             continue
 
@@ -97,6 +104,9 @@ try:
             df.loc[index, '备注'] = '未找到视频'
             df.loc[index, '抖音播放量'] = 0
             df.loc[index, '推荐播放量'] = 0
+            df.loc[index, '点赞量'] = 0
+            df.loc[index, '评论量'] = 0
+            df.loc[index, '分享量'] = 0
             chrome.switch_to_last_window()
             chrome.wait(1)
             continue
@@ -113,7 +123,10 @@ try:
                 title = cells[1].find_element(by='tag name', value='span').text.replace(' ', '')
                 title2data[title] = {
                     '抖音播放量': normalize_number(cells[2].text),
-                    '推荐播放量': normalize_number(cells[3].text)
+                    '推荐播放量': normalize_number(cells[3].text),
+                    '点赞量': normalize_number(cells[4].text),
+                    '评论量': normalize_number(cells[5].text),
+                    '分享量': normalize_number(cells[6].text),
                 }
 
             total -= 10
@@ -130,10 +143,16 @@ try:
                 df.loc[index, '备注'] = '完成'
                 df.loc[index, '抖音播放量'] = int(title2data[t]['抖音播放量'])
                 df.loc[index, '推荐播放量'] = int(title2data[t]['推荐播放量'])
+                df.loc[index, '点赞量'] = int(title2data[t]['点赞量'])
+                df.loc[index, '评论量'] = int(title2data[t]['评论量'])
+                df.loc[index, '分享量'] = int(title2data[t]['分享量'])
             else:
                 df.loc[index, '备注'] = '未找到视频'
                 df.loc[index, '抖音播放量'] = 0
                 df.loc[index, '推荐播放量'] = 0
+                df.loc[index, '点赞量'] = 0
+                df.loc[index, '评论量'] = 0
+                df.loc[index, '分享量'] = 0
 
         chrome.switch_to_last_window()
         chrome.wait(1)
